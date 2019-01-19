@@ -52,9 +52,19 @@ public @interface FineLayout {
      */
     String rpackage() default "";
 
+
     /**
-     *
+     * 忽略的View Id
      * @return
      */
-    String relativePath() default "";
+    String[] ignoreId() default "";
+
+
+    /**
+     * 忽略View
+     * @return
+     */
+    String[] ignoreView() default "";
+
+
 }

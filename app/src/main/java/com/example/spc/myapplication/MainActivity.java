@@ -5,11 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+
 import tp.fine.layout.FineLayout;
 
-@FineLayout(layout = "activity_main")
-//@FineLayout(layout = "demo")
+@FineLayout(layout = {"activity_main","item_cart"},ignoreId = {"iv_ssx"},ignoreView = {"ImageView","android.support.v7.widget.RecyclerView"})
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+//    FineLayout$ItemCart7 root;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,13 +20,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        adb.tvTitle.set
         TextView textView;
 
-        FineLayout$ActivityMain main;
 //        MainActivity$$InjectActivity injectActivity = new MainActivity$$InjectActivity();
 
 //        injectActivity.inject(this);
 //        Object a = injectActivity.adbd ;
 //        injectActivity.hellow();
 //        injectActivity.
+        View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+
+//        FineLayout$ItemCart7 root = FineLayout$ItemCart7.init(rootView);
+
+        FineLayout$ActivityMain main = FineLayout$ActivityMain.init(rootView);
     }
 
     @Override

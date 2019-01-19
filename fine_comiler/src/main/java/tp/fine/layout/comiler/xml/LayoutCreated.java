@@ -30,10 +30,13 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.lang.model.element.Modifier;
 
+import tp.fine.layout.FineLayout;
 import tp.fine.layout.comiler.util.FileParse;
 import tp.fine.layout.comiler.util.StringUtls;
 
@@ -93,7 +96,7 @@ public class LayoutCreated {
     }
 
 
-    public  void createdField(TypeSpec.Builder typeSpec){
+    public  void createdField(TypeSpec.Builder typeSpec, FineLayout fineLayout){
         if (viewModels == null){
             return;
         }
@@ -101,9 +104,16 @@ public class LayoutCreated {
         for (int i = 0; i < viewModels.size(); i++) {
             ViewModel viewModel = viewModels.get(i);
 
-            String name =  viewModel.getId().replace("@+id/", "");
-            name = StringUtls.parseFristLowParamName(name);
+            String oldName =  viewModel.getId().replace("@+id/", "");
+            String name = StringUtls.parseFristLowParamName(oldName);
             String typeName = viewModel.getTypeName();
+
+            if (isIgnoreId(oldName,fineLayout)){
+                continue;
+            }
+            if (isIgnoreView(typeName,fineLayout)){
+                continue;
+            }
 
             FieldSpec.Builder fieldBuilder = FieldSpec.builder(getViewClassName(typeName), name, Modifier.PUBLIC);
             typeSpec.addField(fieldBuilder.build());
@@ -112,7 +122,7 @@ public class LayoutCreated {
         }
     }
 
-    public  void createdMethod(TypeSpec.Builder typeSpec ,String rpackage){
+    public  void createdMethod(TypeSpec.Builder typeSpec, String rpackage, FineLayout fineLayout){
         if (viewModels == null) {
             return;
         }
@@ -127,6 +137,13 @@ public class LayoutCreated {
             String name = StringUtls.parseFristLowParamName(oldName);
             String typeName = viewModel.getTypeName();
 
+            if (isIgnoreId(oldName,fineLayout)){
+                continue;
+            }
+            if (isIgnoreView(typeName,fineLayout)){
+                continue;
+            }
+
             ClassName r ;
             if (StringUtls.isEmpty(this.r)){
                 r = ClassName.get(rpackage,"R");
@@ -134,10 +151,25 @@ public class LayoutCreated {
                 r = ClassName.get(this.r,"R");
             }
 
-            layoutMenthod.addStatement("$T "+name +" = rootView.findViewById($T.id." +oldName+");", getViewClassName(typeName),r);
+            layoutMenthod.addStatement("$T "+name +" = rootView.findViewById($T.id." +oldName+")", getViewClassName(typeName),r);
         }
 
         typeSpec.addMethod(layoutMenthod.build());
+    }
+
+    public void createdMethodInit(TypeSpec.Builder typeSpec,String packageName,String beanName){
+        ClassName className = ClassName.get(packageName, beanName);
+
+        MethodSpec.Builder initMenthod = MethodSpec.methodBuilder("init")
+                .addModifiers(Modifier.PUBLIC,Modifier.STATIC)
+                .returns(className)
+                .addParameter(getViewClass(), "rootView", Modifier.FINAL);
+        initMenthod.addStatement( "$T bean = new $T()",className ,className);
+        initMenthod.addStatement("bean.bind(rootView)");
+        initMenthod.addStatement("return bean");
+
+        typeSpec.addMethod(initMenthod.build());
+
     }
 
 
@@ -155,4 +187,61 @@ public class LayoutCreated {
     public ClassName getViewClass(){
         return ClassName.get("android.view","View");
     }
+
+
+    /**
+     * 忽略的View
+     */
+    static Set ignore ;
+    static{
+        ignore = new HashSet();
+        ignore.add("include");
+        ignore.add("ViewStub");
+        ignore.add("merge");
+
+    }
+
+
+    /**
+     * 忽略View
+     * @param view
+     * @param fineLayout
+     * @return
+     */
+    public boolean isIgnoreView(String view,FineLayout fineLayout){
+        boolean result = ignore.contains(view);
+        if (result == false) {
+            String[] views = fineLayout.ignoreView();
+            if (views!=null){
+                for (String string:views){
+                    //忽略
+                    if (view.equalsIgnoreCase(string)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 忽略ID
+     * @param id
+     * @param fineLayout
+     * @return
+     */
+    public boolean isIgnoreId(String id,FineLayout fineLayout){
+        boolean result =false;
+        String[] ids = fineLayout.ignoreId();
+        if (ids!=null){
+            for (String string:ids){
+                //忽略
+                if (id.equalsIgnoreCase(string)){
+                    return true;
+                }
+            }
+        }
+        return result;
+    }
+
 }

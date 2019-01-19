@@ -7,7 +7,9 @@ import tp.fine.layout.comiler.util.StringUtls;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -54,27 +56,33 @@ public class AnnotatedClass {
                 }
                 layouts.add(layout);
 
+                String packgeName = mElements.getPackageOf(mTypeElement).getQualifiedName().toString();
+                String beanName = "FineLayout" + "$" + StringUtls.parseFristUpdateParamName(layout);
                 //generaClass
-                TypeSpec.Builder injectClassBuild = TypeSpec.classBuilder("FineLayout" + "$" + StringUtls.parseFristUpdateParamName(layout))
+                TypeSpec.Builder injectClassBuild = TypeSpec.classBuilder(beanName)
                         .addModifiers(Modifier.PUBLIC);
                 //add field
                 LayoutCreated layoutCreated = new LayoutCreated(layout, fineLayout.rpackage());
-                layoutCreated.createdField(injectClassBuild);
+                layoutCreated.createdField(injectClassBuild,fineLayout);
 
                 //add method
-                layoutCreated.createdMethod(injectClassBuild, defaultPacakge);
+                layoutCreated.createdMethod(injectClassBuild, defaultPacakge,fineLayout);
+
+                layoutCreated.createdMethodInit(injectClassBuild,packgeName,beanName);
 
                 //生成代码
                 TypeSpec injectClass = injectClassBuild.build();
 
-                String packgeName = mElements.getPackageOf(mTypeElement).getQualifiedName().toString();
-                JavaFile.builder(packgeName, injectClass).addFileComment("created by fine layout auto").build().writeTo(mFiler);
+                JavaFile.builder(packgeName, injectClass).addFileComment("created by fine layout auto")
+                        .addFileComment("@see R.layout."+layout).build().writeTo(mFiler);
             }
 
         }
 
 
     }
+
+
 
 
 
