@@ -49,8 +49,9 @@ public class AnnotatedClass {
         synchronized (layouts) {
 
             String[] layoutsStr = fineLayout.layout();
+            int index  = -1 ;
             for (String layout : layoutsStr){
-
+                index ++;
                 if (layouts.contains(layout)) {
                     continue;
                 }
@@ -58,6 +59,14 @@ public class AnnotatedClass {
 
                 String packgeName = mElements.getPackageOf(mTypeElement).getQualifiedName().toString();
                 String beanName = "FineLayout" + "$" + StringUtls.parseFristUpdateParamName(layout);
+
+                //自定义名称
+                if (fineLayout.className().length>index){
+                    if (StringUtls.isNotEmpty(fineLayout.className()[index])) {
+                        beanName = fineLayout.className()[index];
+                    }
+                }
+
                 //generaClass
                 TypeSpec.Builder injectClassBuild = TypeSpec.classBuilder(beanName)
                         .addModifiers(Modifier.PUBLIC);
@@ -73,8 +82,8 @@ public class AnnotatedClass {
                 //生成代码
                 TypeSpec injectClass = injectClassBuild.build();
 
-                JavaFile.builder(packgeName, injectClass).addFileComment("created by fine layout auto")
-                        .addFileComment("@see R.layout."+layout).build().writeTo(mFiler);
+                JavaFile.builder(packgeName, injectClass).addFileComment("created by fine layout auto ：$S ; " ,packgeName+"."+mTypeElement.getSimpleName().toString())
+                        .addFileComment(" layout : R.layout.$S ;",layout).build().writeTo(mFiler);
             }
 
         }

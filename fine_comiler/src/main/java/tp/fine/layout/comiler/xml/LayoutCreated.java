@@ -151,7 +151,7 @@ public class LayoutCreated {
                 r = ClassName.get(this.r,"R");
             }
 
-            layoutMenthod.addStatement("$T "+name +" = rootView.findViewById($T.id." +oldName+")", getViewClassName(typeName),r);
+            layoutMenthod.addStatement("this."+name +" = rootView.findViewById($T.id." +oldName+")",r);
         }
 
         typeSpec.addMethod(layoutMenthod.build());
@@ -181,6 +181,12 @@ public class LayoutCreated {
             String name = typeName.substring(pos+1,len);
             return ClassName.get(pn,name);
         }
+
+        if (typeName.equalsIgnoreCase("View")){
+            return getViewClass();
+        }
+
+
         return ClassName.get("android.widget", typeName);
     }
 

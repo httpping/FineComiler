@@ -61,6 +61,13 @@ public @interface FineLayout {
 
 
     /**
+     * 根据自定义文件名生成， name 和 layout的长度 要相同，否则报错
+     * @return
+     */
+    String[] className() default "";
+
+
+    /**
      * 忽略View
      * @return
      */
