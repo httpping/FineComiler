@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        MainActivity$ViewHolder asdf = new  MainActivity$ViewHolder();
 //        adb.tvTitle.set
         TextView textView;
-
 //        MainActivity$$InjectActivity injectActivity = new MainActivity$$InjectActivity();
 
 //        injectActivity.inject(this);

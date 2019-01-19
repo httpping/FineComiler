@@ -1,2 +1,3 @@
-# aptdemo
-apt编译时候生成代码 超简洁demo。很简单的demo比起其他的简化了很多。http://blog.csdn.net/spinchao/article/details/72972185   可以轻松掌握apt入门
+# FineCompiler
+apt编译时候生成代码,根据Layout名生成对应的JavaBean，在编译时解决View查找空指针等问题。
+add by tanping 871625458@qq.com
