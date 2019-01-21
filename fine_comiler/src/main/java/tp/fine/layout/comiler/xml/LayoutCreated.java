@@ -24,6 +24,7 @@ package tp.fine.layout.comiler.xml;
 
 */
 
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -36,6 +37,8 @@ import java.util.Set;
 
 import javax.lang.model.element.Modifier;
 
+import tp.fine.layout.FineBindId;
+import tp.fine.layout.FineBindLayout;
 import tp.fine.layout.FineLayout;
 import tp.fine.layout.comiler.util.FileParse;
 import tp.fine.layout.comiler.util.StringUtls;
@@ -116,6 +119,11 @@ public class LayoutCreated {
             }
 
             FieldSpec.Builder fieldBuilder = FieldSpec.builder(getViewClassName(typeName), name, Modifier.PUBLIC);
+            if (fineLayout.showBind()) {
+                AnnotationSpec.Builder annB = AnnotationSpec.builder(FineBindId.class);
+                annB.addMember("id", "R.id." + oldName);
+                fieldBuilder.addAnnotation(annB.build());
+            }
             typeSpec.addField(fieldBuilder.build());
 //            System.out.println("private " + viewModel.getTypeName() +" " + name +" ;");
 

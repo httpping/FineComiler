@@ -31,54 +31,13 @@ import java.lang.annotation.Target;
 
 /**
  * 项目名称: z
- * 类描述： 生成代码块
- * 创建时间:2019/1/17 17:25
+ * 类描述：自动生成代码后增加的快速代码查找 id
+ * 创建时间:2019/1/21 11:09
  *
  * @author tanping
  */
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.TYPE)
-public @interface FineLayout {
-
-    /**
-     * layout
-     * @return
-     */
-    String[] layout() default "";
-
-
-    /**
-     * R   R.id
-     * @return
-     */
-    String rpackage() default "";
-
-
-    /**
-     * 忽略的View Id
-     * @return
-     */
-    String[] ignoreId() default "";
-
-
-    /**
-     * 根据自定义文件名生成， name 和 layout的长度 要相同，否则报错
-     * @return
-     */
-    String[] className() default "";
-
-
-    /**
-     * 忽略View
-     * @return
-     */
-    String[] ignoreView() default "";
-
-
-    /**
-     * 是否显示 bind 资源
-     * @return
-     */
-    boolean showBind() default  true;
-
+@Target(ElementType.FIELD)
+public @interface FineBindId {
+     int id() ;
 }

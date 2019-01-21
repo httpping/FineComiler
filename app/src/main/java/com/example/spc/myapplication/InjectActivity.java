@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * Created by JokAr on 16/8/6.
  */
 
-//@FineLayout(layout = "activity_main")
+@FineLayout(layout = "activity_main")
 public class InjectActivity {
     private static final ArrayMap<String, Object> injectMap = new ArrayMap<>();
 

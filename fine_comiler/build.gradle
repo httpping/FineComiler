@@ -13,3 +13,4 @@ tasks.withType(JavaCompile) {
 }
 
 
+apply from: "push_maven.gradle"

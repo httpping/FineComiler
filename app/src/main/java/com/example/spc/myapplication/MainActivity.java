@@ -6,11 +6,10 @@ import android.view.View;
 import android.widget.TextView;
 
 
-import com.example.spc.myapplication.fine.FineLayout$ActivityMain;
 
 import tp.fine.layout.FineLayout;
 
-//@FineLayout(layout = "activity_main",className = {"Demo$A"},ignoreId = {"iv_ssx"},ignoreView = {"ImageView","android.support.v7.widget.RecyclerView"})
+@FineLayout(layout = "activity_main",className = "Abc",ignoreId = {"iv_ssx"},ignoreView = {"ImageView"},showBind = false)
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 //    FineLayout$ItemCart7 root;
     @Override
@@ -35,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        abc.abcview = null;
 
         FineLayout$ActivityMain layout = FineLayout$ActivityMain.init(null);
+        layout.recy = null;
     }
 
     @Override

@@ -9,4 +9,5 @@ targetCompatibility = "1.7"
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
+apply from: "push_maven.gradle"
 
