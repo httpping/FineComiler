@@ -33,6 +33,6 @@ import tp.fine.layout.FineLayout;
  *
  * @author tanping
  */
-@FineLayout(layout = "activity_main")
+//@FineLayout(layout = "activity_main")
 public class Demo$A {
 }

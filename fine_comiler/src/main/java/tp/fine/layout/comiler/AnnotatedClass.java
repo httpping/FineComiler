@@ -4,6 +4,7 @@ package tp.fine.layout.comiler;
 import tp.fine.layout.FineBindId;
 import tp.fine.layout.FineBindLayout;
 import tp.fine.layout.FineLayout;
+import tp.fine.layout.comiler.util.GetSetCreated;
 import tp.fine.layout.comiler.util.ParseR;
 import tp.fine.layout.comiler.xml.LayoutCreated;
 import tp.fine.layout.comiler.util.StringUtls;
@@ -11,6 +12,9 @@ import tp.fine.layout.comiler.util.StringUtls;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
+import com.sun.tools.javac.api.JavacTrees;
+import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.TreeTranslator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +23,7 @@ import java.util.Set;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
@@ -37,13 +42,22 @@ public class AnnotatedClass {
     public String defaultPacakge;
     List<String> layouts;
     Filer mFiler;
-    public AnnotatedClass(TypeElement typeElement, Elements elements, Messager messager, String deafultPackage, List<String> layouts, Filer mFiler) {
+
+    private JavacTrees trees;
+    ProcessingEnvironment processingEnvironment;
+
+    GetSetCreated getSetCreated;
+
+    public AnnotatedClass(TypeElement typeElement, Elements elements, Messager messager, String deafultPackage, List<String> layouts, Filer mFiler, ProcessingEnvironment processingEnvironment) {
         mTypeElement = typeElement;
         mElements = elements;
         this.mMessager = messager;
         this.defaultPacakge = deafultPackage;
         this.layouts = layouts;
         this.mFiler = mFiler;
+        this.processingEnvironment = processingEnvironment;
+        getSetCreated = new GetSetCreated(processingEnvironment);
+
     }
 
 
@@ -56,8 +70,6 @@ public class AnnotatedClass {
 
             String[] layoutsStr = fineLayout.layout();
             int index  = -1 ;
-
-
 
             for (String layout : layoutsStr){
                 index ++;
@@ -86,7 +98,6 @@ public class AnnotatedClass {
 
                 //add method
                 layoutCreated.createdMethod(injectClassBuild, defaultPacakge,fineLayout);
-
                 layoutCreated.createdMethodInit(injectClassBuild,packgeName,beanName);
 
 
@@ -98,10 +109,11 @@ public class AnnotatedClass {
                 //生成代码
                 TypeSpec injectClass = injectClassBuild.build();
 
-
                 JavaFile.builder(packgeName, injectClass).addFileComment("created by fine layout auto ：$S ; " ,packgeName+"."+mTypeElement.getSimpleName().toString())
                         .addFileComment(" layout : R.layout.$S ;",layout).build().writeTo(mFiler);
             }
+
+
 
         }
 

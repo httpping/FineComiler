@@ -2,6 +2,7 @@ package tp.fine.layout.comiler;
 
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.JavaFile;
+import com.sun.tools.javac.api.JavacTrees;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -45,8 +46,9 @@ public class ActivityInjectProcesser extends AbstractProcessor {
      * 存放生成过的layout，防止重复生成浪费时间
      */
     List<String> layouts = new ArrayList<>();
+    private JavacTrees trees;
 
-
+    ProcessingEnvironment mProcessingEnv;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -55,6 +57,9 @@ public class ActivityInjectProcesser extends AbstractProcessor {
         mElementUtils = processingEnv.getElementUtils();
         mMessager = processingEnv.getMessager();
         mAnnotatedClassMap = new TreeMap<>();
+        mProcessingEnv = processingEnv;
+
+
 
         // 在这里打印gradle文件传进来的参数
         Map<String, String> map = processingEnv.getOptions();
@@ -95,9 +100,11 @@ public class ActivityInjectProcesser extends AbstractProcessor {
             if (element.getKind() == ElementKind.CLASS) {
                 getAnnotatedClass(element);
             } else {
-                error("ActivityInject only can use  in ElementKind.CLASS",element);
+                error("only can use  in ElementKind.CLASS",element);
             }
         }
+
+
 
     }
 
@@ -109,7 +116,7 @@ public class ActivityInjectProcesser extends AbstractProcessor {
         String fullName = typeElement.getQualifiedName().toString();
         AnnotatedClass annotatedClass = mAnnotatedClassMap.get(fullName);
         if (annotatedClass == null) {
-            annotatedClass = new AnnotatedClass(typeElement, mElementUtils, mMessager,deafultPackage,layouts,mFiler);
+            annotatedClass = new AnnotatedClass(typeElement, mElementUtils, mMessager,deafultPackage,layouts,mFiler,processingEnv);
             mAnnotatedClassMap.put(fullName, annotatedClass);
         }
         return annotatedClass;

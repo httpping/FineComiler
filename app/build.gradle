@@ -14,13 +14,14 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
+                includeCompileClasspath = true
                 arguments = [applicationId:"com.example.spc.myapplication"]
             }
         }
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -43,4 +44,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':fine_annotation')
     annotationProcessor project(':fine_comiler')
+
 }

@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  *
  * @author tanping
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface FineBindLayout {
     int layout();

@@ -46,7 +46,7 @@ import tp.fine.layout.comiler.util.StringUtls;
 /**
  * 项目名称: z
  * 类描述：
- * 创建时间:2019/1/18 10:17
+ * 创建时间:2019/1/.22 10:17
  *
  * @author tanping
  */
@@ -54,10 +54,6 @@ public class LayoutCreated {
 
     //最后一次的路径
     public static String lastLayoutPath;
-    /**
-     * 用于表示默认值
-     */
-    public static final String  DEFAULT_PACKAGE_KEY="app";
 
     private List<ViewModel> viewModels;
     String layout;
@@ -107,7 +103,7 @@ public class LayoutCreated {
         for (int i = 0; i < viewModels.size(); i++) {
             ViewModel viewModel = viewModels.get(i);
 
-            String oldName =  viewModel.getId().replace("@+id/", "");
+            String oldName =  viewModel.getId().replace("@id/","").replace("@+id/", "");
             String name = StringUtls.parseFristLowParamName(oldName);
             String typeName = viewModel.getTypeName();
 

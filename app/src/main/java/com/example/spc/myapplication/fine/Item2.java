@@ -34,6 +34,6 @@ import tp.fine.layout.FineLayout;
  * @author tanping
  */
 //@FineLayout(layout = {"item_cart6"})
-//@FineLayout(layout = {"item_cart6","item_cart7","item_cart8","item_cart9","item_cart10"})
+@FineLayout(layout = {"item_cart6","item_cart7","item_cart8","item_cart9","item_cart10"})
 public class Item2 {
 }

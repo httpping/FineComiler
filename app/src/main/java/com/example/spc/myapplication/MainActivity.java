@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-
-
+import android.widget.Toast;
 
 import tp.fine.layout.FineLayout;
 
-@FineLayout(layout = "activity_main",className = "Abc",ignoreId = {"iv_ssx"},ignoreView = {"ImageView"},showBind = false)
+@FineLayout(layout = "activity_main",className = "Abc",ignoreId = {"iv_ssx"},ignoreView = {"ImageView"})
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 //    FineLayout$ItemCart7 root;
     @Override
@@ -33,12 +32,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        Demo$A abc = Demo$A.init(null);
 //        abc.abcview = null;
 
-        FineLayout$ActivityMain layout = FineLayout$ActivityMain.init(null);
-        layout.recy = null;
+//        FineLayout$ActivityMain layout = FineLayout$ActivityMain.init(null);
+//        layout.recy = null;
+
+        int va;
+//        va = getAd();
+        //        Toast.makeText(this,"ad :" + va,Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"ad :" + getHello(),Toast.LENGTH_LONG).show();
+
+       /* getAd();
+
+        getHello();*/
+
+       Abc abc = Abc.init(rootView);
+       String text = abc.tvTest.getText().toString();
+        Toast.makeText(this,"ad :" + text,Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onClick(View v) {
 
     }
+
+
+    public String hello = "helllo world";
+
+    private int ad =2323;
 }

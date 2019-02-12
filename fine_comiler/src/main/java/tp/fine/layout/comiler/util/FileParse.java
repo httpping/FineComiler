@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 文件搜索器
+ */
 public class FileParse {
     public static List<File> searchFiles(File folder, final String keyword) {
         List<File> result = new ArrayList<File>();

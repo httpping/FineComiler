@@ -31,12 +31,12 @@ import java.lang.annotation.Target;
 
 /**
  * 项目名称: z
- * 类描述： 生成代码块
+ * 类描述： 生成代码块,编译结束后丢弃
  * 创建时间:2019/1/17 17:25
  *
  * @author tanping
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface FineLayout {
 
